@@ -1,5 +1,4 @@
 // Friday, August 22, 2025 - On vacation in Anji, Zhejiang.
-// Code it for fun :)
 #include <stdio.h>
 
 // Q1 - A_Plus_Abs_B
