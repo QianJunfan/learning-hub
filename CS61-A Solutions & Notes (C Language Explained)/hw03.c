@@ -5,6 +5,7 @@
 //                                                                                    Fri Oct, 10 
 
 #include <stdio.h>
+#include <wctype.h>
 
 // q1 - num eights
 int num_eights(int n)
@@ -104,6 +105,44 @@ int count_ways(int total, int idx)
         return count_ways(total-dollar_type[idx], idx) + count_ways(total, idx+1);
 }
 
+// q5 - count dollars upward
+static int next_larger_dollar(int b)
+{
+        if (b == 1)  return 5;
+        if (b == 5)  return 10;
+        if (b == 10) return 20;
+        if (b == 20) return 50;
+        if (b == 50) return 100;
+        return -1;
+}
+
+int count_dollars_upward(int total, int b)
+{
+        if (total == 0)
+                return 1;
+        if (total < 0)
+                return 0;
+        if (b == -1)
+                return 0;
+        return  count_dollars_upward(total-b, b) +
+                count_dollars_upward(total, next_larger_dollar(b));  
+}
+
+// q6 - knapsack
+int max = 0;
+int weight[4] = {2, 6, 3, 3};
+int value[4] = {1, 5, 3, 3};
+
+int knapsack(int c, int v, int idx)
+{
+        if (c < 0)
+                return 0;
+        if (idx > 3)
+                return 0;
+        if (c >= 0 && v > max)
+                max = v;
+        return knapsack(c-weight[idx], v+value[idx], idx+1) + knapsack(c, v, idx+1); 
+}
 
 int main(void)
 {
@@ -113,7 +152,10 @@ int main(void)
         printf("exp: %d\n", dy(10));
 
         int coin[6] = {1, 5, 10, 20, 50, 100};
-        printf("q4: %d\n", count_dollars_forloop(100, coin, 6));
-        printf("q4: %d\n", count_ways(100, 0));
+        printf("q4: %d\n", count_dollars_forloop(200, coin, 6));
+        printf("q4: %d\n", count_ways(200, 0));
+        printf("q5: %d\n", count_dollars_upward(200, 1));
+        knapsack(6, 0, 0);
+        printf("q6: %d\n", max);
         return 0;
 }
